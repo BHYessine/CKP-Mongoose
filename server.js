@@ -1,16 +1,18 @@
 const express = require("express");
 const app = express();
 const connectDB = require("./config/connectDB");
-const run = require("./controllers/run");
-const addPerson = require("./controllers/addPerson");
-const arrayOfPeople = require("./controllers/arrayOfPeople");
-const personFood = require("./controllers/personFood");
-const personId = require("./controllers/personId");
-const addFood = require("./controllers/addFood");
-const personName = require("./controllers/personName");
-const deletePerson = require("./controllers/deletePerson");
-const deleteManyPerson = require("./controllers/deleteManyPerson");
-const searchPerson = require("./controllers/searchPerson");
+const Person = require("./models/person");
+
+// const run = require("./controllers/run");
+
+// const arrayOfPeople = require("./controllers/arrayOfPeople");
+// const personFood = require("./controllers/personFood");
+// const personId = require("./controllers/personId");
+// const addFood = require("./controllers/addFood");
+// const personName = require("./controllers/personName");
+// const deletePerson = require("./controllers/deletePerson");
+// const deleteManyPerson = require("./controllers/deleteManyPerson");
+// const searchPerson = require("./controllers/searchPerson");
 require("dotenv").config();
 
 connectDB();
@@ -18,8 +20,18 @@ connectDB();
 app.use(express.json());
 
 //****** Add New Person******
-//const newPerson={name: "yessine",age: 30 , favoriteFoods:["burger","chicken"]}
-//addPerson(newPerson);
+// const newPerson = { name: "Marry", age: 15, favoriteFoods: ["burger", "fish"] };
+// const addPerson = async () => {
+//   const person = new Person(newPerson);
+//   await person.save(() => {
+//     try {
+//       console.log("New person added successfully:", person);
+//     } catch (err) {
+//       console.log(err.message);
+//     }
+//   });
+// };
+// addPerson();
 
 //****** Add Many Person******
 // const arrayPeople = [
@@ -27,40 +39,132 @@ app.use(express.json());
 //   { name: "feres", age: 27, favoriteFoods: ["sandwich", "egg"] },
 //   { name: "ali", age: 30, favoriteFoods: ["burger", "chicken"] },
 // ];
-//arrayOfPeople(arrayPeople);
+// const arrayOfPeople = async () => {
+//   const newperson = await Person.create(arrayPeople);
 
-//****** Find All Person hava a name******
-//run();
+//   await newperson.save(() => {
+//     try {
+//       console.log("Many person added successfully");
+//     } catch (err) {
+//       console.log(err.message);
+//     }
+//   });
+// };
+// arrayOfPeople();
+
+//****** Find All Person have a name******
+// const run = async () => {
+//   try {
+//     const allPerson = await Person.find({ name: { $exists: true } });
+//     console.log(allPerson);
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
+// run();
 
 //****** Find One Person has a certain food******
 // const food = "burger";
-// personFood(food);
+// const personFood = async () => {
+//   try {
+//     const person = await Person.findOne({
+//       favoriteFoods: food,
+//     });
+//     console.log(`Here is the person favors the ${food}:`, person);
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
+// personFood();
 
 //****** Find Person with Id******
-// const Id = "61ca155d156a081d98731c1b";
-// personId(Id);
+// const Id = "61ca149655431b4a7bcc02e2";
+// const personId = async () => {
+//   try {
+//     const person = await Person.findById(Id);
+//     console.log(person);
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
+// personId();
 
 //****** Find Person by Id and update******
-// const Id = "61ca129fd4a58285dfe3e0f9";
+// const Id = "61ca149655431b4a7bcc02e2";
 // const food = "hamburger";
-// addFood({ Id: Id, food: food });
+// const addFood = async () => {
+//   const person = await Person.findById(Id);
+//   person.favoriteFoods.push(food);
+//   person.updatedAt = Date.now();
+//   await person.save(() => {
+//     try {
+//       console.log(`${food} added successfully`, person);
+//     } catch (err) {
+//       console.log(err.message);
+//     }
+//   });
+// };
+// addFood();
 
 //****** Find Person by Name and update******
 // const name = "ali";
 // const age = 20;
-// personName({ name: name, age: age });
+// const personName = async () => {
+//   const person = await Person.findOneAndUpdate(name, age, {
+//     new: true,
+//     runValidators: true,
+//   });
+//   person.updatedAt = Date.now();
+//   await person.save(() => {
+//     try {
+//       console.log(`Age of ${data.name} updated successfully`, person);
+//     } catch (err) {
+//       console.log(err.message);
+//     }
+//   });
+// };
+// personName();
 
 //****** Find Person by Id and delete******
 // const Id = "61ca129fd4a58285dfe3e0f9";
-// deletePerson(Id);
+// const deletePerson = async () => {
+//   try {
+//     const person = await Person.findByIdAndRemove(Id);
+//     console.log(`Person with Id (${Id}) deleted`, person);
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
+// deletePerson();
 
 //****** Find many Person by name and delete******
 // const name = "Marry";
-// deleteManyPerson(name);
+// const deleteManyPerson = async () => {
+//   try {
+//     const person = await Person.deleteMany({ name: name });
+//     person.deletedCount == 0
+//       ? console.log(`No person with name ${name} exist!!`)
+//       : console.log(`${person.deletedCount} person with name ${name} deleted`);
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
+// deleteManyPerson();
 
 //****** Find tow Person by favoriteFoods ******
-// const food = "burger";
-// searchPerson(food);
+const food = "burger";
+const searchPerson = async () => {
+  try {
+    const person = await Person.find({ favoriteFoods: food })
+      .limit(2)
+      .sort({ name: 1 })
+      .select({ age: false });
+    console.log(person);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+searchPerson();
 
 const PORT = process.env.PORT;
 app.listen(process.env.port, (err) =>

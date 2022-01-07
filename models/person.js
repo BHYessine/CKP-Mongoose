@@ -4,6 +4,7 @@ const personSchema = new Schema({
   name: {
     type: String,
     required: true,
+    index: true,
     unique: [true, "already used choose another name "],
   },
   age: {
