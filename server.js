@@ -3,16 +3,6 @@ const app = express();
 const connectDB = require("./config/connectDB");
 const Person = require("./models/person");
 
-// const run = require("./controllers/run");
-
-// const arrayOfPeople = require("./controllers/arrayOfPeople");
-// const personFood = require("./controllers/personFood");
-// const personId = require("./controllers/personId");
-// const addFood = require("./controllers/addFood");
-// const personName = require("./controllers/personName");
-// const deletePerson = require("./controllers/deletePerson");
-// const deleteManyPerson = require("./controllers/deleteManyPerson");
-// const searchPerson = require("./controllers/searchPerson");
 require("dotenv").config();
 
 connectDB();
